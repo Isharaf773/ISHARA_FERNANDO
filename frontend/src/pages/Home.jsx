@@ -19,6 +19,7 @@ import photoTutor from '../assets/photo-05.png';
 import photoCalm from '../assets/photo-06.png';
 import photoHero from '../assets/photo-08.png';
 import { getArrayPayload } from '../utils/apiResponse';
+import { getApiUrl } from '../utils/api';
 
 const features = [
   { icon: Lightbulb, title: 'Concept Based Learning', text: 'Learn the reason behind every formula, not just the final answer.' },
@@ -60,7 +61,7 @@ const Home = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || ''}/api/lessons?isFeatured=true`);
+        const { data } = await axios.get(getApiUrl('/api/lessons?isFeatured=true'));
         setFeaturedLessons(getArrayPayload(data, ['lessons', 'data']).slice(0, 3));
       } catch (error) {
         console.error('Error fetching featured lessons', error);

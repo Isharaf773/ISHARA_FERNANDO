@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl } from '../utils/api';
 import { ChevronRight, Calendar, Download, Tag, ArrowLeft } from 'lucide-react';
 
 const LessonDetail = () => {
@@ -21,7 +22,7 @@ const LessonDetail = () => {
   useEffect(() => {
     const fetchLesson = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || ''}/api/lessons/${id}`);
+        const { data } = await axios.get(getApiUrl(`/api/lessons/${id}`));
         setLesson(data);
       } catch {
         setError('Lesson not found or an error occurred.');

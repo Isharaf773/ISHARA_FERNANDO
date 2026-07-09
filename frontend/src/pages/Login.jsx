@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl } from '../utils/api';
 import { Lock, User, AlertCircle } from 'lucide-react';
 
 const Login = () => {
@@ -16,7 +17,7 @@ const Login = () => {
     setError('');
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || ''}/api/auth/login`, { username, password });
+      const { data } = await axios.post(getApiUrl('/api/auth/login'), { username, password });
       
       localStorage.setItem('studentToken', data.token);
       localStorage.setItem('studentInfo', JSON.stringify(data));

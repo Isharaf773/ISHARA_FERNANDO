@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl } from '../utils/api';
 import { Lock, User, Mail, AlertCircle, CheckCircle } from 'lucide-react';
 
 const Register = () => {
@@ -41,7 +42,7 @@ const Register = () => {
     }
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || ''}/api/auth/register`, {
+      const { data } = await axios.post(getApiUrl('/api/auth/register'), {
         username,
         email: email || undefined, // send email only if filled
         password

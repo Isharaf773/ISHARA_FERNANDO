@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Lock, User } from 'lucide-react';
+import { getApiUrl } from '../utils/api';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -16,7 +17,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || ''}/api/auth/login`, { username, password });
+      const { data } = await axios.post(getApiUrl('/api/auth/login'), { username, password });
       if (data.role !== 'admin') {
         setError('Only admin accounts can access the Admin Portal.');
         setLoading(false);

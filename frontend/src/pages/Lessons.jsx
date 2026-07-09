@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Search, Filter, PlayCircle } from 'lucide-react';
 import { getArrayPayload } from '../utils/apiResponse';
+import { getApiUrl } from '../utils/api';
 
 const Lessons = () => {
   const [lessons, setLessons] = useState([]);
@@ -35,7 +36,7 @@ const Lessons = () => {
   useEffect(() => {
     const fetchSelectData = async () => {
       try {
-        const catRes = await axios.get(`${import.meta.env.VITE_API_URL || ''}/api/categories`);
+        const catRes = await axios.get(getApiUrl('/api/categories'));
         setCategories(getArrayPayload(catRes.data, ['categories', 'data']));
       } catch (error) {
         console.error('Error fetching categories', error);
@@ -48,7 +49,7 @@ const Lessons = () => {
     const fetchLessons = async () => {
       setLoading(true);
       try {
-        let url = `${import.meta.env.VITE_API_URL || ''}/api/lessons?`;
+        let url = getApiUrl('/api/lessons?');
         if (searchTerm) url += `search=${searchTerm}&`;
         if (categoryFilter) url += `category=${categoryFilter}&`;
         if (yearFilter) url += `year=${yearFilter}&`;

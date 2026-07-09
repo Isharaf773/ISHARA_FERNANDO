@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogOut, Video, Folder, MessageSquare, Plus, Trash2, Edit } from 'lucide-react';
 import { getArrayPayload } from '../utils/apiResponse';
+import { getApiUrl } from '../utils/api';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('lessons');
@@ -40,9 +41,9 @@ const AdminDashboard = () => {
         const config = { headers: { Authorization: `Bearer ${token}` } };
         
         const [lessonsRes, categoriesRes, messagesRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_API_URL || ''}/api/lessons/admin`, config),
-          axios.get(`${import.meta.env.VITE_API_URL || ''}/api/categories`),
-          axios.get(`${import.meta.env.VITE_API_URL || ''}/api/contact`, config)
+          axios.get(getApiUrl('/api/lessons/admin'), config),
+          axios.get(getApiUrl('/api/categories')),
+          axios.get(getApiUrl('/api/contact'), config)
         ]);
 
         setLessons(getArrayPayload(lessonsRes.data, ['lessons', 'data']));
@@ -68,7 +69,7 @@ const AdminDashboard = () => {
   const deleteLesson = async (id) => {
     if (window.confirm('Are you sure you want to delete this lesson?')) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_URL || ''}/api/lessons/${id}`, {
+        await axios.delete(getApiUrl(`/api/lessons/${id}`), {
           headers: { Authorization: `Bearer ${token}` }
         });
         setLessons(lessons.filter(l => l._id !== id));
@@ -81,7 +82,7 @@ const AdminDashboard = () => {
   const deleteCategory = async (id) => {
     if (window.confirm('Are you sure? This will not delete associated lessons.')) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_URL || ''}/api/categories/${id}`, {
+        await axios.delete(getApiUrl(`/api/categories/${id}`), {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCategories(categories.filter(c => c._id !== id));
@@ -96,7 +97,7 @@ const AdminDashboard = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL || ''}/api/categories`,
+        getApiUrl('/api/categories'),
         { name: newCategoryName, description: newCategoryDescription },
         config
       );
@@ -118,7 +119,7 @@ const AdminDashboard = () => {
         featured: newLesson.featured,
       };
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL || ''}/api/lessons`,
+        getApiUrl('/api/lessons'),
         payload,
         config
       );
