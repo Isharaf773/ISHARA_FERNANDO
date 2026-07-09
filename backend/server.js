@@ -1,8 +1,6 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import path from 'path';
 import bcrypt from 'bcryptjs';
 
 import authRoutes from './routes/authRoutes.js';
@@ -12,6 +10,7 @@ import contactRoutes from './routes/contactRoutes.js';
 // seedRoutes removed for security in production
 import { notFound, errorHandler } from './middlewares/errorHandler.js';
 import User from './models/User.js';
+import { connectDB } from './lib/db.js';
 
 // Load env vars
 dotenv.config();
@@ -24,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+connectDB()
   .then(async () => {
     console.log('MongoDB connected successfully');
 
